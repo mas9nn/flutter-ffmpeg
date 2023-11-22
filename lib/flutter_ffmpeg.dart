@@ -36,6 +36,7 @@ class FlutterFFmpegConfig {
   static const MethodChannel _methodChannel = const MethodChannel('flutter_ffmpeg');
   static const EventChannel _eventChannel = const EventChannel('flutter_ffmpeg_event');
   static final Map<int, ExecuteCallback> _executeCallbackMap = new Map();
+  static final Map<int, int> _notExecutedMap = new Map();
 
   LogCallback? logCallback;
   StatisticsCallback? statisticsCallback;
@@ -56,6 +57,10 @@ class FlutterFFmpegConfig {
   }
 
   void setCallback(int id, ExecuteCallback callback) {
+    if (_notExecutedMap[id] != null) {
+      callback.call(new CompletedFFmpegExecution(id, _notExecutedMap[id]!));
+      return;
+    }
     _executeCallbackMap[id] = callback;
   }
 
@@ -125,6 +130,7 @@ class FlutterFFmpegConfig {
     if (executeCallback != null) {
       executeCallback(new CompletedFFmpegExecution(executionId, returnCode));
     } else {
+      _notExecutedMap[executionId] = returnCode;
       print("Async execution with id $executionId completed but no callback is found for it.");
     }
   }

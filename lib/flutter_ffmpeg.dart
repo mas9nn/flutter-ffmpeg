@@ -40,8 +40,20 @@ class FlutterFFmpegConfig {
 
   LogCallback? logCallback;
   StatisticsCallback? statisticsCallback;
+  bool inited = false;
 
-  FlutterFFmpegConfig() {
+  static final FlutterFFmpegConfig _flutterFFmpegConfig = FlutterFFmpegConfig._instance();
+
+  factory FlutterFFmpegConfig() => _flutterFFmpegConfig;
+
+  FlutterFFmpegConfig._instance() {
+    if (!inited) {
+      init();
+    }
+  }
+
+  init() {
+    inited = true;
     logCallback = null;
     statisticsCallback = null;
 
@@ -57,8 +69,10 @@ class FlutterFFmpegConfig {
   }
 
   void setCallback(int id, ExecuteCallback callback) {
+    print("hash: " + this.hashCode.toString());
     if (_notExecutedMap[id] != null) {
       callback.call(new CompletedFFmpegExecution(id, _notExecutedMap[id]!));
+      _notExecutedMap.remove(id);
       return;
     }
     _executeCallbackMap[id] = callback;
@@ -415,9 +429,7 @@ class FlutterFFmpegConfig {
 
 class FlutterFFmpeg {
   static const MethodChannel _methodChannel = const MethodChannel('flutter_ffmpeg');
-  final FlutterFFmpegConfig config;
-
-  FlutterFFmpeg({required this.config});
+  final FlutterFFmpegConfig config = FlutterFFmpegConfig();
 
   /// Executes FFmpeg synchronously with [commandArguments] provided. This
   /// method returns when execution completes.

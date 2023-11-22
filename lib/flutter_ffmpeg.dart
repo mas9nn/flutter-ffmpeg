@@ -409,7 +409,7 @@ class FlutterFFmpegConfig {
 
 class FlutterFFmpeg {
   static const MethodChannel _methodChannel = const MethodChannel('flutter_ffmpeg');
-  static FlutterFFmpegConfig config = FlutterFFmpegConfig();
+  static late FlutterFFmpegConfig config;
 
   void setConfig(FlutterFFmpegConfig newConfig) {
     config = newConfig;

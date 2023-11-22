@@ -409,11 +409,9 @@ class FlutterFFmpegConfig {
 
 class FlutterFFmpeg {
   static const MethodChannel _methodChannel = const MethodChannel('flutter_ffmpeg');
-  static late FlutterFFmpegConfig config;
+  final FlutterFFmpegConfig config;
 
-  void setConfig(FlutterFFmpegConfig newConfig) {
-    config = newConfig;
-  }
+  FlutterFFmpeg({required this.config});
 
   /// Executes FFmpeg synchronously with [commandArguments] provided. This
   /// method returns when execution completes.

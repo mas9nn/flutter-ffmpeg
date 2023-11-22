@@ -22,6 +22,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ffmpeg/completed_ffmpeg_execution.dart';
+import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 import 'package:flutter_ffmpeg/log.dart';
 import 'package:flutter_ffmpeg_example/abstract.dart';
 import 'package:flutter_ffmpeg_example/flutter_ffmpeg_api_wrapper.dart';
@@ -45,6 +46,7 @@ class AudioTab {
   }
 
   void setActive() {
+    FlutterFFmpeg asd = FlutterFFmpeg();
     print("Audio Tab Activated");
     enableLogCallback(null);
     _createAudioSample();
@@ -99,8 +101,7 @@ class AudioTab {
           ffprint("Testing post execution commands.");
           Test.testPostExecutionCommands();
         }).then((executionId) {
-          ffprint(
-              "Async FFmpeg process started with arguments '$ffmpegCommand' and executionId $executionId.");
+          ffprint("Async FFmpeg process started with arguments '$ffmpegCommand' and executionId $executionId.");
         });
       });
     });
@@ -114,8 +115,7 @@ class AudioTab {
         audioSampleFile.delete().catchError((_) {});
       } on Exception catch (_) {}
 
-      String ffmpegCommand =
-          "-hide_banner -y -f lavfi -i sine=frequency=1000:duration=5 -c:a pcm_s16le ${audioSampleFile.path}";
+      String ffmpegCommand = "-hide_banner -y -f lavfi -i sine=frequency=1000:duration=5 -c:a pcm_s16le ${audioSampleFile.path}";
 
       ffprint("Creating audio sample with '$ffmpegCommand'.");
 
@@ -124,8 +124,7 @@ class AudioTab {
           ffprint("AUDIO sample created");
         } else {
           ffprint("Creating AUDIO sample failed with rc=$result.");
-          showPopup(
-              "Creating AUDIO sample failed. Please check log for the details.");
+          showPopup("Creating AUDIO sample failed. Please check log for the details.");
         }
         enableLogCallback(logCallback);
       });
@@ -224,43 +223,17 @@ class AudioTab {
   List<DropdownMenuItem<String>> getAudioCodecList() {
     List<DropdownMenuItem<String>> list = List.empty(growable: true);
 
-    list.add(new DropdownMenuItem(
-        value: "mp2 (twolame)",
-        child: SizedBox(
-            width: 100, child: Center(child: new Text("mp2 (twolame)")))));
-    list.add(new DropdownMenuItem(
-        value: "mp3 (liblame)",
-        child: SizedBox(
-            width: 100, child: Center(child: new Text("mp3 (liblame)")))));
-    list.add(new DropdownMenuItem(
-        value: "mp3 (libshine)",
-        child: SizedBox(
-            width: 100, child: Center(child: new Text("mp3 (libshine)")))));
-    list.add(new DropdownMenuItem(
-        value: "vorbis",
-        child: SizedBox(width: 100, child: Center(child: new Text("vorbis")))));
-    list.add(new DropdownMenuItem(
-        value: "opus",
-        child: SizedBox(width: 100, child: Center(child: new Text("opus")))));
-    list.add(new DropdownMenuItem(
-        value: "amr-nb",
-        child: SizedBox(width: 100, child: Center(child: new Text("amr-nb")))));
-    list.add(new DropdownMenuItem(
-        value: "amr-wb",
-        child: SizedBox(width: 100, child: Center(child: new Text("amr-wb")))));
-    list.add(new DropdownMenuItem(
-        value: "ilbc",
-        child: SizedBox(width: 100, child: Center(child: new Text("ilbc")))));
-    list.add(new DropdownMenuItem(
-        value: "soxr",
-        child: SizedBox(width: 100, child: Center(child: new Text("soxr")))));
-    list.add(new DropdownMenuItem(
-        value: "speex",
-        child: SizedBox(width: 100, child: Center(child: new Text("speex")))));
-    list.add(new DropdownMenuItem(
-        value: "wavpack",
-        child:
-            SizedBox(width: 100, child: Center(child: new Text("wavpack")))));
+    list.add(new DropdownMenuItem(value: "mp2 (twolame)", child: SizedBox(width: 100, child: Center(child: new Text("mp2 (twolame)")))));
+    list.add(new DropdownMenuItem(value: "mp3 (liblame)", child: SizedBox(width: 100, child: Center(child: new Text("mp3 (liblame)")))));
+    list.add(new DropdownMenuItem(value: "mp3 (libshine)", child: SizedBox(width: 100, child: Center(child: new Text("mp3 (libshine)")))));
+    list.add(new DropdownMenuItem(value: "vorbis", child: SizedBox(width: 100, child: Center(child: new Text("vorbis")))));
+    list.add(new DropdownMenuItem(value: "opus", child: SizedBox(width: 100, child: Center(child: new Text("opus")))));
+    list.add(new DropdownMenuItem(value: "amr-nb", child: SizedBox(width: 100, child: Center(child: new Text("amr-nb")))));
+    list.add(new DropdownMenuItem(value: "amr-wb", child: SizedBox(width: 100, child: Center(child: new Text("amr-wb")))));
+    list.add(new DropdownMenuItem(value: "ilbc", child: SizedBox(width: 100, child: Center(child: new Text("ilbc")))));
+    list.add(new DropdownMenuItem(value: "soxr", child: SizedBox(width: 100, child: Center(child: new Text("soxr")))));
+    list.add(new DropdownMenuItem(value: "speex", child: SizedBox(width: 100, child: Center(child: new Text("speex")))));
+    list.add(new DropdownMenuItem(value: "wavpack", child: SizedBox(width: 100, child: Center(child: new Text("wavpack")))));
 
     return list;
   }

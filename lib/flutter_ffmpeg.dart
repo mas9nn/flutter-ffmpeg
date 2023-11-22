@@ -33,20 +33,16 @@ typedef StatisticsCallback = void Function(Statistics statistics);
 typedef ExecuteCallback = void Function(CompletedFFmpegExecution execution);
 
 class FlutterFFmpegConfig {
+  FlutterFFmpegConfig._private();
+  static final _instance = FlutterFFmpegConfig._private();
   static const MethodChannel _methodChannel = const MethodChannel('flutter_ffmpeg');
   static const EventChannel _eventChannel = const EventChannel('flutter_ffmpeg_event');
   static final Map<int, ExecuteCallback> _executeCallbackMap = new Map();
   static final Map<int, int> _notExecutedMap = new Map();
-  static FlutterFFmpegConfig? _instance;
   LogCallback? logCallback;
   StatisticsCallback? statisticsCallback;
 
-  factory FlutterFFmpegConfig() {
-    if (_instance == null) {
-      _instance = FlutterFFmpegConfig()..init();
-    }
-    return _instance!;
-  }
+  factory FlutterFFmpegConfig() => _instance;
 
   init() {
     logCallback = null;

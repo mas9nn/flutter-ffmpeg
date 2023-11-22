@@ -37,23 +37,18 @@ class FlutterFFmpegConfig {
   static const EventChannel _eventChannel = const EventChannel('flutter_ffmpeg_event');
   static final Map<int, ExecuteCallback> _executeCallbackMap = new Map();
   static final Map<int, int> _notExecutedMap = new Map();
-
+  static FlutterFFmpegConfig? _instance;
   LogCallback? logCallback;
   StatisticsCallback? statisticsCallback;
-  bool inited = false;
 
-  static final FlutterFFmpegConfig _flutterFFmpegConfig = FlutterFFmpegConfig._instance();
-
-  factory FlutterFFmpegConfig() => _flutterFFmpegConfig;
-
-  FlutterFFmpegConfig._instance() {
-    if (!inited) {
-      init();
+  factory FlutterFFmpegConfig() {
+    if (_instance == null) {
+      _instance = FlutterFFmpegConfig()..init();
     }
+    return _instance!;
   }
 
   init() {
-    inited = true;
     logCallback = null;
     statisticsCallback = null;
 
